@@ -45,6 +45,7 @@ if uploaded_file is not None:
   Think step by step before providing a detailed answer. 
   Also, provide the page number of the document from where the answers are provided, if you could not find the numeber, do not provide the same.
   Wherever required, answer in a point-wise format.
+  Do not answer any unrelated questions which are not in the provided documents, please be careful on this.
   I will tip you with a $1000 if the answer provided is helpful.
   <context>
   {context}
