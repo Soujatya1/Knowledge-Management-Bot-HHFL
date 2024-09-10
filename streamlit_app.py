@@ -34,7 +34,7 @@ if uploaded_file is not None:
   hf_embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 
 
-  llm = ChatGroq(groq_api_key = "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", model_name = 'llama-3.1-70b-versatile', temperature = 0, top_p = 0.2)
+  llm = ChatGroq(groq_api_key = "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", model_name = 'llama3-70b-8192', temperature = 0, top_p = 0.2)
 
   #Vector database storage
   vector_db = FAISS.from_documents(docs, hf_embedding)
