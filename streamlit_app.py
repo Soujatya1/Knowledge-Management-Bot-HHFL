@@ -41,8 +41,8 @@ if uploaded_file is not None:
 
   #Craft ChatPrompt Template
   prompt = ChatPromptTemplate.from_template("""
-  You are an AI HR Policy specialist. Answer the following questions based only on the provided context and the uploaded documents.
-  Think step by step before providing a detailed answer. Also, provide the page number of the document from where the answers are provided.
+  You are an AI Knowledge Management specialist. Answer the following questions based only on the provided context and the uploaded documents.
+  Think step by step before providing a detailed answer. Also, provide the page number of the document from where the answers are provided. Wherever required, answer in a point-wise format.
   I will tip you with a $1000 if the answer provided is helpful.
   <context>
   {context}
