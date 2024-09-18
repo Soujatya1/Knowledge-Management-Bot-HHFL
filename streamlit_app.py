@@ -41,7 +41,8 @@ if uploaded_file is not None:
 
   #Craft ChatPrompt Template
   prompt = ChatPromptTemplate.from_template("""
-  You are an AI Knowledge Management specialist. Answer the following questions based only on the provided context and the uploaded documents.
+  You are a Bandhan Life Insurance specialist. Answer the queries from an insurance specialist perspective who wants to resolve customer queries as asked.
+  Answer the following questions based only on the provided context and the uploaded documents.
   Think step by step before providing a detailed answer. 
   Also, provide the page number of the document from where the answers are provided, if you could not find the numeber, do not provide the same.
   Wherever required, answer in a point-wise format.
