@@ -16,7 +16,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 #App Title
 st.title("Knowledge Management Chatbot")
 
-uploaded_file = st.file_uploader("Upload a file", type = ["pdf", "doc"])
+uploaded_file = st.file_uploader("Upload a file", type = ["pdf"])
 
 if uploaded_file is not None:
   with open("HRPolicy_Test.pdf", "wb") as f:
