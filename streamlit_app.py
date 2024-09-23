@@ -40,16 +40,21 @@ if uploaded_file is not None:
 
     # Craft ChatPrompt Template
     prompt = ChatPromptTemplate.from_template("""
-    You are a Knowledge management specialist.
-    Answer the following questions based only on the provided context and the uploaded documents.
+    You are a Bandhan Life Insurance specialist. Answer the queries from an insurance specialist perspective who wants to resolve customer queries as asked.
+    Answer the following questions based only on the provided context, previous responses, and the uploaded documents.
     Think step by step before providing a detailed answer.
     Wherever required, answer in a point-wise format.
     Do not answer any unrelated questions which are not in the provided documents, please be careful on this.
     I will tip you with a $1000 if the answer provided is helpful.
+    
     <context>
     {context}
     </context>
-    Question: {input}""")
+    Conversation History:
+    {chat_history}
+
+    Question: {input}
+    """)
 
     # Stuff Document Chain Creation
     document_chain = create_stuff_documents_chain(llm, prompt)
@@ -64,15 +69,23 @@ if uploaded_file is not None:
     user_question = st.text_input("Ask a question about the relevant document", key="input")
 
     if user_question:
-        # Get response from the retrieval chain
-        response = retrieval_chain.invoke({"input": user_question})
+        # Build conversation history
+        conversation_history = ""
+        for chat in st.session_state['chat_history']:
+            conversation_history += f"You: {chat['user']}\nBot: {chat['bot']}\n"
+
+        # Get response from the retrieval chain with context
+        response = retrieval_chain.invoke({
+            "input": user_question,
+            "chat_history": conversation_history
+        })
 
         # Add the user's question and the model's response to chat history
         st.session_state.chat_history.append({"user": user_question, "bot": response['answer']})
 
     # Display chat history with a conversational format
     if st.session_state['chat_history']:
-        for i, chat in enumerate(st.session_state['chat_history']):
+        for chat in st.session_state['chat_history']:
             st.markdown(f"<div style='padding: 10px; border-radius: 10px; background-color: #DCF8C6;'><strong>You:</strong> {chat['user']}</div>", unsafe_allow_html=True)
             st.markdown(f"<div style='padding: 10px; border-radius: 10px; background-color: #ECECEC; margin-top: 5px;'><strong>Bot:</strong> {chat['bot']}</div>", unsafe_allow_html=True)
             st.markdown("<br>", unsafe_allow_html=True)
