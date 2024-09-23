@@ -40,7 +40,7 @@ if uploaded_file is not None:
 
     # Craft ChatPrompt Template
     prompt = ChatPromptTemplate.from_template("""
-    You are a Bandhan Life Insurance specialist. Answer the queries from an insurance specialist perspective who wants to resolve customer queries as asked.
+    You are a Knowledge management specialist.
     Answer the following questions based only on the provided context and the uploaded documents.
     Think step by step before providing a detailed answer.
     Wherever required, answer in a point-wise format.
@@ -61,7 +61,7 @@ if uploaded_file is not None:
     retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
     # Chat interface
-    user_question = st.text_input("Ask a question about the relevant document")
+    user_question = st.text_input("Ask a question about the relevant document", key="input")
 
     if user_question:
         # Get response from the retrieval chain
@@ -70,8 +70,9 @@ if uploaded_file is not None:
         # Add the user's question and the model's response to chat history
         st.session_state.chat_history.append({"user": user_question, "bot": response['answer']})
 
-    # Display chat history
+    # Display chat history with a conversational format
     if st.session_state['chat_history']:
-        for chat in st.session_state['chat_history']:
-            st.write(f"**You:** {chat['user']}")
-            st.write(f"**Bot:** {chat['bot']}")
+        for i, chat in enumerate(st.session_state['chat_history']):
+            st.markdown(f"<div style='padding: 10px; border-radius: 10px; background-color: #DCF8C6;'><strong>You:</strong> {chat['user']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='padding: 10px; border-radius: 10px; background-color: #ECECEC; margin-top: 5px;'><strong>Bot:</strong> {chat['bot']}</div>", unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
