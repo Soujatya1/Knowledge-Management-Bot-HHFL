@@ -60,7 +60,7 @@ if uploaded_file is not None:
         'bedrock',
         aws_access_key_id='ASIAWNHTHA7MLXLTNR4C',
         aws_secret_access_key='E0DB0sh9mKMUQzZIQjCxRCE+suNoWMPs3nD0/09r',
-        region_name='Asia'  # Set the correct region
+        region_name='ap-south-1'  # Set the correct region
     )
 
     # Define a function to interact with Bedrock LLM
