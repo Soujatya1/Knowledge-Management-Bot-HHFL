@@ -7,6 +7,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 from langchain_groq import ChatGroq
 from langchain.embeddings import HuggingFaceEmbeddings
+from pathlib import Path
 
 # App Title
 st.title("Knowledge Management Chatbot")
@@ -15,16 +16,23 @@ st.title("Knowledge Management Chatbot")
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-# Upload file
-uploaded_file = st.file_uploader("Upload a file", type=["pdf"])
+s3 = boto3.client('s3', region_name=region_name)
+bucket_name = 'your-s3-bucket-name'
+file_key = 'path/to/your/document.pdf'
 
-if uploaded_file is not None:
-    with open("HRPolicy_Test.pdf", "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    st.success("File uploaded successfully!")
+def download_from_s3(bucket_name, file_key, download_path):
+    try:
+        s3.download_file(bucket_name, file_key, download_path)
+        st.success(f"File {file_key} downloaded from S3 successfully!")
+    except Exception as e:
+        st.error(f"Error downloading file from S3: {e}")
 
-    # Load PDF
-    loader = PyPDFLoader("HRPolicy_Test.pdf")
+download_path = "C:/Users/Documents"
+download_from_s3(bucket_name, file_key, download_path)
+
+if Path(download_path).exists():
+
+    loader = PyPDFLoader(download_path)
     docs = loader.load()
 
     # Text Splitting into chunks
