@@ -1,5 +1,6 @@
 import streamlit as st
 from langchain_community.document_loaders import PyPDFLoader
+from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
@@ -38,14 +39,17 @@ pdf_file = stream_file_from_s3(bucket_name, file_key)
 
 if pdf_file:
 
-    loader = PyPDFLoader(pdf_file)
+    loader = PdfReader(pdf_file)
     docs = loader.load()
+
+    for pages in reader.pages():
+        docs.append(page.extract_text())
 
     st.sucess("Loaded")
 
     # Text Splitting into chunks
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=15)
-    documents = text_splitter.split_documents(docs)
+    documents = text_splitter.split_text("".join(docs))
 
     # Initialize embeddings and LLM
     hf_embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
