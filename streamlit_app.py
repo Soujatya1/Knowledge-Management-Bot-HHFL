@@ -28,21 +28,20 @@ s3 = boto3.client('s3',
 
 bucket_name = 'your-s3-bucket-name'
 file_key = 'path/to/your/document.pdf'
-download_path = "C:/Users/Documents"
 
 def stream_file_from_s3(bucket_name, file_key):
     try:
         file.obj = s3.get_object(Bucket = bucket_name, Key = file_key)
         return BytesIO(file_obj['Body'].read())
     except Exception as e:
-        st.error(f"Error downloading file from S3: {e}")
+        st.error("Error streaming file from S3")
         retrun None
 
 pdf_file = stream_file_from_s3(bucket_name, file_key)
 
 if pdf_file:
 
-    loader = PyPDFLoader(download_path)
+    loader = PyPDFLoader(pdf_file)
     docs = loader.load()
 
     st.sucess("Loaded")
