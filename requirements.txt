@@ -6,4 +6,4 @@ faiss-cpu
 pypdf
 sentence_transformers
 boto3
-io
+PyPDF2
