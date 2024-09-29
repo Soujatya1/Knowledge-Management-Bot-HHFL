@@ -8,6 +8,7 @@ from langchain.chains import create_retrieval_chain
 from langchain_groq import ChatGroq
 from langchain.embeddings import HuggingFaceEmbeddings
 from pathlib import Path
+from io import BytesIO
 
 # App Title
 st.title("Knowledge Management Chatbot")
@@ -16,24 +17,35 @@ st.title("Knowledge Management Chatbot")
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-s3 = boto3.client('s3', region_name=region_name)
+aws_access_key = "AWS_ACESS_KEY"
+aws_secret_key = "AWS_SECRET_KEY"
+region_name = "ap-south-1"
+
+s3 = boto3.client('s3',
+                  region_name=region_name,
+                  aws_access_key_id = aws_access_key,
+                  aws_secret_key_id = aws_secret_key)
+
 bucket_name = 'your-s3-bucket-name'
 file_key = 'path/to/your/document.pdf'
+download_path = "C:/Users/Documents"
 
-def download_from_s3(bucket_name, file_key, download_path):
+def stream_file_from_s3(bucket_name, file_key):
     try:
-        s3.download_file(bucket_name, file_key, download_path)
-        st.success(f"File {file_key} downloaded from S3 successfully!")
+        file.obj = s3.get_object(Bucket = bucket_name, Key = file_key)
+        return BytesIO(file_obj['Body'].read())
     except Exception as e:
         st.error(f"Error downloading file from S3: {e}")
+        retrun None
 
-download_path = "C:/Users/Documents"
-download_from_s3(bucket_name, file_key, download_path)
+pdf_file = stream_file_from_s3(bucket_name, file_key)
 
-if Path(download_path).exists():
+if pdf_file:
 
     loader = PyPDFLoader(download_path)
     docs = loader.load()
+
+    st.sucess("Loaded")
 
     # Text Splitting into chunks
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=15)
