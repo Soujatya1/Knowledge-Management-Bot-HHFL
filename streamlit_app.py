@@ -21,10 +21,7 @@ aws_access_key = "AWS_ACESS_KEY"
 aws_secret_key = "AWS_SECRET_KEY"
 region_name = "ap-south-1"
 
-s3 = boto3.client('s3',
-                  region_name=region_name,
-                  aws_access_key_id = aws_access_key,
-                  aws_secret_key_id = aws_secret_key)
+s3 = boto3.client('s3', region_name=region_name, aws_access_key_id = aws_access_key, aws_secret_key_id = aws_secret_key)
 
 bucket_name = 'your-s3-bucket-name'
 file_key = 'path/to/your/document.pdf'
